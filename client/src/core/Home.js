@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Layout from "./Layout";
 import { getProducts } from "./ApiCore";
 import Card from "./Card";
+import Search from "./Search";
 
 const Home = (props) => {
   const [productsBySell, setProductsBySell] = useState([]);
@@ -19,7 +20,7 @@ const Home = (props) => {
 
   const loadProductsByArrival = () => {
     getProducts("createdAt").then((data) => {
-      console.log(data);
+      // console.log(data);
       if (data.error) {
         setError(data.error);
       } else {
@@ -38,6 +39,7 @@ const Home = (props) => {
       description="Node React E-commerce App"
       className="container-fluid"
     >
+      <Search />
       <h2 className="mb-4">New Arrivals</h2>
       <div className="row">
         {productsByArrival.map((product, i) => (
