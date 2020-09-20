@@ -3,10 +3,16 @@ import { Link, Redirect } from "react-router-dom";
 import ShowImage from "./ShowImage";
 import moment from "moment";
 
-const Card = ({ product }) => {
-  const [showViewProductButton, setShowViewProductButton] = useState(true);
-  const [showAddToCartButton, setShowAddToCartButton] = useState(true);
-  const [showRemoveProductButton, setShowRemoveProductButton] = useState(true);
+const Card = ({
+  product,
+  showViewProductButton = true,
+  showAddToCartButton = true,
+  showDescriptionFull = false,
+  showRemoveProductButton = false,
+}) => {
+  // const [showViewProductButton, setShowViewProductButton] = useState(true);
+  // const [showAddToCartButton, setShowAddToCartButton] = useState(true);
+  // const [showRemoveProductButton, setShowRemoveProductButton] = useState(true);
   const showViewButton = (showViewProductButton) => {
     return (
       showViewProductButton && (
@@ -48,13 +54,18 @@ const Card = ({ product }) => {
   };
   return (
     <div className="card ">
-      <div className="card-header card-header-1 ">{product.name}</div>
+      <div className="card-header card-header-1 name ">{product.name}</div>
       <div className="card-body">
         {/* {shouldRedirect(redirect)} */}
 
         <ShowImage item={product} url="product" />
 
-        <p className="card-p  mt-2">{product.description.substring(0, 100)} </p>
+        {/* <p className="card-p  mt-2">{product.description.substring(0, 100)} </p> */}
+        <p className="card-p  mt-2 lead">
+          {showDescriptionFull
+            ? product.description
+            : product.description.substring(0, 100)}{" "}
+        </p>
         <p className="card-p black-10">$ {product.price}</p>
         <p className="black-9">
           Category: {product.category && product.category.name}
