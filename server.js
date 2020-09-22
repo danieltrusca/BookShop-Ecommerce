@@ -15,6 +15,8 @@ const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
 const categoryRoutes = require("./routes/category");
 const productRoutes = require("./routes/product");
+const braintreeRoute = require("./routes/braintree");
+const orderRoute = require("./routes/order");
 
 //DB config
 const db = process.env.MONGO_URI;
@@ -42,6 +44,8 @@ app.use("/api", authRoutes);
 app.use("/api", userRoutes);
 app.use("/api", categoryRoutes);
 app.use("/api", productRoutes);
+app.use("/api", braintreeRoute);
+app.use("/api", orderRoute);
 
 const port = process.env.PORT || 8000;
 
