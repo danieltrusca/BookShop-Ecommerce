@@ -1,16 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "../core/Layout";
 import { isAuthenticated } from "../auth/index";
 import { Link } from "react-router-dom";
-import { createCategory } from "./ApiAdmin";
+import { createCategory, getCategories } from "./ApiAdmin";
 
 const AddCategory = () => {
+  const [categories, setCategories] = useState([]);
   const [name, setName] = useState("");
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
 
   // destructure user and token from localstorage
   const { user, token } = isAuthenticated();
+
+  // load categories and set form data
+  const initCategories = () => {
+    getCategories().then((data) => {
+      if (data.error) {
+        setError(data.error);
+      } else {
+        setCategories(data);
+      }
+    });
+  };
+
+  useEffect(() => {
+    initCategories();
+  }, []);
 
   const handleChange = (e) => {
     setError("");
@@ -68,6 +84,39 @@ const AddCategory = () => {
     </div>
   );
 
+  const destroy = (categoryId) => {
+    //
+  };
+
+  const listCategories = (categories) => (
+    <div className="row">
+      <div className="col-12">
+        <h2 className="text-center">Total {categories.length} categories</h2>
+        <hr />
+        <ul className="list-group">
+          {categories.map((c, i) => (
+            <li
+              key={i}
+              className="list-group-item d-flex justify-content-between align-items-center"
+            >
+              <strong>{c.name}</strong>
+              <Link to={`/admin/category/update/${c._id}`}>
+                <span className="badge badge-warning badge-pill">Update</span>
+              </Link>
+              <span
+                onClick={() => destroy(c._id)}
+                className="badge badge-danger badge-pill"
+              >
+                Delete
+              </span>
+            </li>
+          ))}
+        </ul>
+        <br />
+      </div>
+    </div>
+  );
+
   return (
     <Layout
       title="Add a new category"
@@ -79,6 +128,7 @@ const AddCategory = () => {
           {showError()}
           {newCategoryFom()}
           {goBack()}
+          {listCategories(categories)}
         </div>
       </div>
     </Layout>
